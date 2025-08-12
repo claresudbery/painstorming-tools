@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Comment Extractor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        .input-section, .output-section {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .extract-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        .extract-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        .copy-btn {
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            color: white;
+        }
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3);
+        }
+        .clear-btn {
+            background: linear-gradient(45deg, #fc8181, #f56565);
+            color: white;
+        }
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 101, 101, 0.3);
+        }
+        .stats {
+            background: linear-gradient(45deg, #ffd89b, #19547b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .instructions {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 5px 0;
+            color: #4a5568;
+        }
+        #output {
+            background-color: #f8f9ff;
+            border-color: #c6d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 LinkedIn Comment Extractor</h1>
+        
+        <div class="instructions">
+            <h3>📋 How to Use:</h3>
+            <ul>
+                <li><strong>Paste</strong> your LinkedIn comments data in the input box below</li>
+                <li><strong>Click "Extract Comments"</strong> to process the data</li>
+                <li><strong>Copy</strong> the clean comments from the output box</li>
+            </ul>
+            <p><strong>What it removes:</strong> Profile links, names, job titles, timestamps, "Like", "Reply", engagement counts, and other metadata</p>
+        </div>
+
+        <div class="input-section">
+            <label for="input">📥 Paste LinkedIn Comments Data:</label>
+            <textarea id="input" placeholder="Paste your LinkedIn comments here..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="extract-btn" onclick="extractComments()">✨ Extract Comments</button>
+            <button class="copy-btn" onclick="copyToClipboard()">📋 Copy Results</button>
+            <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="output-section">
+            <label for="output">📤 Extracted Comments:</label>
+            <textarea id="output" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        function extractComments() {
+            const input = document.getElementById('input').value;
+            const output = document.getElementById('output');
+            const stats = document.getElementById('stats');
+            
+            if (!input.trim()) {
+                alert('Please paste some LinkedIn comments data first!');
+                return;
+            }
+
+            // Split the input into lines
+            const lines = input.split('\n');
+            const comments = [];
+            
+            // Patterns to identify non-comment lines
+            const skipPatterns = [
+                /^View .+ graphic link$/,
+                /^View .+'s graphic link$/,
+                /^• \d+(st|nd|rd|th)\+?$/,
+                /^\d+[wdh]$/,  // timestamps like "1mo", "2w", "3d", "4h"
+                /^Like$/,
+                /^Reply$/,
+                /^like$/,
+                /^\d+$/,  // standalone numbers
+                /^\d+ repl(y|ies)$/,
+                /^\d+ Comment on .+ comment$/,
+                /^…more$/,
+                /^Share$/,
+                /^Follow$/,
+                /^Connect$/
+            ];
+            
+            // Job title/description patterns (these usually appear after names)
+            const jobTitlePatterns = [
+                /Software Engineer/i,
+                /Engineer/i,
+                /Developer/i,
+                /Manager/i,
+                /Director/i,
+                /Founder/i,
+                /CEO|CTO|CIO/i,
+                /Architect/i,
+                /Lead/i,
+                /Senior/i,
+                /Principal/i,
+                /Technical/i,
+                /Full Stack/i,
+                /Backend|Frontend/i,
+                /DevOps/i,
+                /Data/i,
+                /ML|AI/i,
+                /Product/i,
+                /Building/i,
+                /\|/  // pipes often separate job descriptions
+            ];
+            
+            let isNameLine = false;
+            let skipNextAsJobTitle = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                // Skip empty lines
+                if (!line) continue;
+                
+                // Check if this line matches skip patterns
+                if (skipPatterns.some(pattern => pattern.test(line))) {
+                    isNameLine = false;
+                    skipNextAsJobTitle = false;
+                    continue;
+                }
+                
+                // If previous line was a name, this is likely a job title
+                if (skipNextAsJobTitle) {
+                    skipNextAsJobTitle = false;
+                    continue;
+                }
+                
+                // Check if this looks like a job title/description
+                if (jobTitlePatterns.some(pattern => pattern.test(line))) {
+                    continue;
+                }
+                
+                // Check if this is likely a person's name (has capital letters, common name pattern)
+                if (/^[A-Z][a-zA-Z]+ [A-Z]/.test(line) && !line.includes('.') && line.length < 50) {
+                    isNameLine = true;
+                    skipNextAsJobTitle = true;
+                    continue;
+                }
+                
+                // If we get here, this is likely a comment
+                // Additional filtering for very short lines that might be metadata
+                if (line.length < 10 && !/[.!?]$/.test(line)) {
+                    continue;
+                }
+                
+                // This should be a comment
+                comments.push(line);
+                isNameLine = false;
+                skipNextAsJobTitle = false;
+            }
+            
+            // Join comments and display
+            const result = comments.join('\n\n');
+            output.value = result;
+            
+            // Update stats
+            stats.textContent = `Extracted ${comments.length} comments from ${lines.length} total lines`;
+            
+            // Auto-scroll to output
+            output.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            if (!output.value) {
+                alert('No comments to copy! Extract comments first.');
+                return;
+            }
+            
+            output.select();
+            document.execCommand('copy');
+            
+            // Visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✅ Copied!';
+            button.style.background = 'linear-gradient(45deg, #48bb78, #38a169)';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = 'linear-gradient(45deg, #48bb78, #38a169)';
+            }, 2000);
+        }
+        
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('output').value = '';
+            document.getElementById('stats').textContent = '';
+        }
+    </script>
+</body>
+</html>
