@@ -1,3 +1,10 @@
+
+# How to use
+
+It's html! Just open the script in the browser (can prob just double-click in file explorer). You'll get a web UI.
+
+# Background
+
 - I wanted ChatGPT to summarise a LinkedIn thread for me, but I was using the free version at the time and 
   - it couldn't access LinkedIn threads via links cos couldn't log in
   - it couldn't cope with the amount of text involved in copy/pasting from LinkedIn(cos max text limit)
