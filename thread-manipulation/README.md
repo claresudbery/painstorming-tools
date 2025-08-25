@@ -1,0 +1,11 @@
+- I wanted ChatGPT to summarise a LinkedIn thread for me, but I was using the free version at the time and 
+  - it couldn't access LinkedIn threads via links cos couldn't log in
+  - it couldn't cope with the amount of text involved in copy/pasting from LinkedIn(cos max text limit)
+- So I wanted to reduce the number of characters by extracting only the interesting stuff and none of the crud
+- It wasn't perfect (some text got lost, some text I didn't want stayed in), but the script was pretty good. 
+- What was really impressive was that it created a interactable deployable mini web app, with UI
+- It did a good enough job, and then I stopped tinkering to prioritise other things
+- In the end I upgraded to paid ChatGPT, which had higher text limit and the ability to upload files, so I didn't actually need the tool any more
+
+- For full notes, including original Claude and ChatGPT conversations, see notes in career-analysis Obsidian, in `Misc small AI coding projects`, under "Extract comments from a LinkedIn thread"
+  - ... or [check spreadsheet](https://docs.google.com/spreadsheets/d/1z3FSdz6fdDWjrPZtUWoAcIPMgrDlM23a4nWr3iGUs4o/edit?gid=0#gid=0).
