@@ -17,7 +17,6 @@ python3 concept_analyzer.py document.md --concepts "AI" --concepts "data"
 ```
 
 ## Implementation
-- **Main Class**: `ConceptAnalyzer` - handles file loading, text processing, concept counting
 - **Text Processing**: Extract plain text, remove markdown formatting with regex
 - **Matching**: Word boundary regex matching for accurate concept detection
 - **Output**: Rich library for formatted tables and progress bars
