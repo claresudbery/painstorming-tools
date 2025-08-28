@@ -29,6 +29,12 @@ pip install -r requirements.txt
 python concept_analyzer.py PATH --concepts "concept1" --concepts "concept2"
 ```
 
+Example:
+
+```bash
+python3 concept_analyzer.py "/Users/claresudbery/Library/Mobile Documents/iCloud~md~obsidian/Documents/CareerAnalysis/Clare's Career/0 - Missions/09-AI-Mission/AI coding projects/Sales Safari Assistant/Sample Source Data/Leadership asking for performance metrics (sample data).md" --concepts-file "./Concepts/concepts.txt"
+```
+
 ### Options
 
 - `PATH`: Path to a markdown file or directory containing markdown files
