@@ -11,7 +11,14 @@ We're going to start with an MVP with just one simple feature: The ability to an
 - Case-sensitive/insensitive matching
 - Clean table output with totals and per-file breakdown
 
+## Frontend Choice
+**Selected**: Streamlit web interface for easy file uploads and interactive results display.
+
+See [frontend alternatives](front_end_alternatives.md) for comparison of other options considered.
+
 ## Implementation
+- **Backend**: Python with concept analysis logic
+- **Frontend**: Streamlit for web interface
 - **Text Processing**: Extract plain text, remove markdown formatting with regex
 - **Matching**: Word boundary regex matching for accurate concept detection
-- **Output**: Rich library for formatted tables and progress bars
+- **Output**: Interactive tables and charts via Streamlit
