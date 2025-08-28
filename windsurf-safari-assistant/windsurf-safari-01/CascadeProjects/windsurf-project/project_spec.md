@@ -1,9 +1,10 @@
-# Markdown Concept Analyzer
+# Safari Assistant
 
 ## What It Does
-Analyzes markdown files to count how often specified concepts appear.
+The long term plan is to create a tool that will help us to analyse our Sales Safari data so that we can spot trends, pains, and common behaviour patterns in our target audience.
+We're going to start with an MVP with just one simple feature: The ability to analyse markdown files to count how often specified concepts appear.
 
-## Key Features
+## Key sub-features
 - Processes single files or entire directories
 - Ignores code blocks, frontmatter, and markdown formatting
 - Supports concepts from command line or file
@@ -12,8 +13,8 @@ Analyzes markdown files to count how often specified concepts appear.
 
 ## Usage
 ```bash
-python3 concept_analyzer.py <PATH> --concepts-file concepts.txt
-python3 concept_analyzer.py document.md --concepts "AI" --concepts "data"
+python3 safari_assistant.py <PATH> --concepts-file concepts.txt
+python3 safari_assistant.py document.md --concepts "AI" --concepts "data"
 ```
 
 ## Implementation
@@ -28,6 +29,6 @@ python3 concept_analyzer.py document.md --concepts "AI" --concepts "data"
 - `markdown` - Markdown processing
 
 ## Files to Create
-1. `concept_analyzer.py` - Main application
+1. `safari_assistant.py` - Main application
 2. `requirements.txt` - Dependencies
 3. `README.md` - Usage documentation
