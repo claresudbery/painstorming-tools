@@ -11,8 +11,8 @@ We're going to start with an MVP with just one simple feature: The ability to an
 - Case-sensitive/insensitive matching
 - Clean table output with totals and per-file breakdown
 
-## Frontend Choice
-**Selected**: Streamlit web interface for easy file uploads and interactive results display.
+## Frontend Technology
+We selected [Streamlit web interface](front_end_alternatives.md#option-1-streamlit-recommended-for-mvp) for easy file uploads and interactive results display.
 
 See [frontend alternatives](front_end_alternatives.md) for comparison of other options considered.
 
